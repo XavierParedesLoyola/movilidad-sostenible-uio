@@ -12,7 +12,7 @@ export default function Login() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Inicia sesión en tu cuenta</h2>
+  <h2 className="text-2xl font-bold mb-6 text-center text-black">Inicia sesión en tu cuenta</h2>
         <input
           type="email"
           placeholder="Correo electrónico"
