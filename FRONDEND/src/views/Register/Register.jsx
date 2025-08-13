@@ -24,7 +24,7 @@ export default function Register() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Crea tu cuenta</h2>
+  <h2 className="text-2xl font-bold mb-6 text-center text-black">Crea tu cuenta</h2>
         <div className="flex gap-2 mb-4">
           <input
             type="text"
