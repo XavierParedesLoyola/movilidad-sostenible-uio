@@ -28,10 +28,11 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  min-width: 100vw;
   min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f9fafb; /* Un color claro para todo el fondo */
 }
 
 h1 {
