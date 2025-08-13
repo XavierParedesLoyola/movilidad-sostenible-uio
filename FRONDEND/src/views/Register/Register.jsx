@@ -24,7 +24,15 @@ export default function Register() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Crea tu cuenta</h2>
+        <div className="flex flex-col items-center mb-6">
+          <div className="bg-green-600 rounded-full p-3 mb-2">
+            <svg width="32" height="32" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+          </div>
+          <h2 className="text-2xl font-bold text-center text-black">Crea tu cuenta</h2>
+          <p className="text-sm mt-1 text-gray-600">
+            ¿Ya tienes cuenta? <a href="/login" className="text-green-600 font-semibold">Inicia sesión aquí</a>
+          </p>
+        </div>
         <div className="flex gap-2 mb-4">
           <input
             type="text"
@@ -69,7 +77,14 @@ export default function Register() {
           required
         />
         {errors.confirm && <div className="text-red-500 text-sm mb-2">{errors.confirm}</div>}
+        <div className="flex items-center mb-4">
+          <input type="checkbox" className="mr-2" required />
+          <span className="text-sm text-gray-600">
+            Acepto los <a href="#" className="text-green-600 underline">términos y condiciones</a> y la <a href="#" className="text-green-600 underline">política de privacidad</a>
+          </span>
+        </div>
         <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-2">Crear cuenta</button>
+        <a href="/" className="block text-center text-gray-500 text-sm mt-4">← Volver al inicio</a>
       </form>
     </div>
   );
