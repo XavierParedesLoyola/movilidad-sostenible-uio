@@ -24,7 +24,7 @@ export default function Register() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow w-full max-w-md">
-  <h2 className="text-2xl font-bold mb-6 text-center text-black">Crea tu cuenta</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Crea tu cuenta</h2>
         <div className="flex gap-2 mb-4">
           <input
             type="text"
@@ -69,7 +69,14 @@ export default function Register() {
           required
         />
         {errors.confirm && <div className="text-red-500 text-sm mb-2">{errors.confirm}</div>}
+        <div className="flex items-center mb-4">
+          <input type="checkbox" className="mr-2" required />
+          <span className="text-sm text-gray-600">
+            Acepto los <a href="#" className="text-green-600 underline">términos y condiciones</a> y la <a href="#" className="text-green-600 underline">política de privacidad</a>
+          </span>
+        </div>
         <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-2">Crear cuenta</button>
+        <a href="/" className="block text-center text-gray-500 text-sm mt-4">← Volver al inicio</a>
       </form>
     </div>
   );
