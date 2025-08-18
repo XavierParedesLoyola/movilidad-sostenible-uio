@@ -1,10 +1,10 @@
+//#region Imports
 require("dotenv").config(); // Para cargar variables de entorno
-
 const express = require("express"); // Framework para construir servidores web
 const cors = require("cors"); // Middleware permite solicitudes desde otros dominios
-
 const authRoutes = require("./routes/authRoutes"); // Importa las rutas
 const { getConnection } = require("./config/db"); // Importa la función de conexión a la BDD
+//#endregion
 
 const app = express(); // Crea una instancia de express
 
@@ -15,9 +15,9 @@ app.use(express.json()); // Procesa cuerpos JSON
 
 //#region Rutas
 
-// Definición de rutas
+//#region Definición de rutas
 app.use("/api/auth", authRoutes);
-
+//#endregion
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
