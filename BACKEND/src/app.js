@@ -1,20 +1,25 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+require("dotenv").config(); // Para cargar variables de entorno
 
-const app = express();
+const express = require("express"); // Framework para construir servidores web
+const cors = require("cors"); // Middleware permite solicitudes desde otros dominios
 
-//Middlewares
+const authRoutes = require("./routes/authRoutes"); // Importa las rutas
+const { getConnection } = require("./config/db"); // Importa la función de conexión a la BDD
+
+const app = express(); // Crea una instancia de express
+
+//#region Middlewares Globales 
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Procesa cuerpos JSON
+//#endregion
 
-//Rutas
-const exampleRoutes = require('./routes/exampleRoutes');
-app.use('/api/example', exampleRoutes);
+//#region Rutas
 
-//Ruta base
-app.get('/', (req, res) => {
-    res.send('Backend de movilidad sostenible UIO funcionando');
+// Definición de rutas
+app.use("/api/auth", authRoutes);
+
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`);
 });
-
-module.exports = app;
