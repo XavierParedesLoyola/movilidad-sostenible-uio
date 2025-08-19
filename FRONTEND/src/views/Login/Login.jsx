@@ -12,22 +12,12 @@ export default function Login() {
     setMensaje("Iniciando sesión...");
     try {
       const res = await loginUsuario(form);
-      if (res.token && res.rol) {
+      if (res.token) {
         localStorage.setItem("token", res.token);
         localStorage.setItem("rol", res.rol);
-        localStorage.setItem("idUsuario", res.IdUsuario); // <-- Aquí guardas el GUID real
-        localStorage.setItem("nombreUsuario", res.Nombre); // o res.nombreUsuario según tu backend
-
-        // Redirigir según el rol
-        if (res.rol === "administrador") {
-          navigate("/dashboard");
-        } else if (res.rol === "ciudadano") {
-          navigate("/ciudadano");
-        } else if (res.rol === "promotor") {
-          navigate("/promotor");
-        } else {
-          setMensaje("Rol no reconocido");
-        }
+        localStorage.setItem("idUsuario", res.IdUsuario);
+        localStorage.setItem("nombreUsuario", res.NombreUsuario); // <-- Aquí el cambio
+        navigate("/ciudadano");
       } else {
         setMensaje(res.message || "Credenciales incorrectas");
       }
