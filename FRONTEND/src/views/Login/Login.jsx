@@ -1,11 +1,26 @@
 import { useState } from "react";
+import { loginUsuario } from "../../api/auth";
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ Correo: "", Contraseña: "" });
+  const [mensaje, setMensaje] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de login aquí
+    setMensaje("Iniciando sesión...");
+    try {
+      const res = await loginUsuario(form);
+      if (res.token) {
+        setMensaje("¡Login exitoso!");
+        // Aquí puedes guardar el token en localStorage y redirigir si quieres
+        // localStorage.setItem("token", res.token);
+        // window.location.href = "/";
+      } else {
+        setMensaje(res.message || "Credenciales incorrectas");
+      }
+    } catch (error) {
+      setMensaje("Error al conectar con el servidor");
+    }
   };
 
   return (
@@ -22,18 +37,20 @@ export default function Login() {
         </div>
         <input
           type="email"
+          name="Correo"
           placeholder="Correo electrónico"
           className="w-full mb-4 p-2 border rounded text-black placeholder-gray-500"
-          value={form.email}
-          onChange={e => setForm({ ...form, email: e.target.value })}
+          value={form.Correo}
+          onChange={e => setForm({ ...form, Correo: e.target.value })}
           required
         />
         <input
           type="password"
+          name="Contraseña"
           placeholder="Contraseña"
           className="w-full mb-2 p-2 border rounded text-black placeholder-gray-500"
-          value={form.password}
-          onChange={e => setForm({ ...form, password: e.target.value })}
+          value={form.Contraseña}
+          onChange={e => setForm({ ...form, Contraseña: e.target.value })}
           required
         />
         <div className="flex justify-between items-center mb-4">
@@ -44,6 +61,7 @@ export default function Login() {
           <a href="#" className="text-green-600 text-sm">¿Olvidaste tu contraseña?</a>
         </div>
         <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mt-2">Iniciar sesión</button>
+        {mensaje && <div className="text-center text-sm text-red-600 mt-2">{mensaje}</div>}
         <div className="flex items-center my-4">
           <div className="flex-grow h-px bg-gray-300"></div>
           <span className="mx-2 text-gray-400 text-sm">O continúa con</span>
