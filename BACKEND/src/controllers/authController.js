@@ -59,10 +59,11 @@ async function login(req, res) {
       jwtConfig.secret,
       { expiresIn: jwtConfig.expiresIn }
     );
-
+//Respuesta JSON
     res.json({ 
       token,
-      rol: usuario.Rol 
+      rol: usuario.Rol,
+      IdUsuario: usuario.IdUsuario 
   });
   } catch (error) {
     console.error(error);
