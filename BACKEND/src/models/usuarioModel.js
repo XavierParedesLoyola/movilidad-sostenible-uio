@@ -8,15 +8,14 @@ async function crearUsuario({ IdUsuario, Nombre, Correo, ContraseñaHash, Rol })
     .input("Correo", sql.NVarChar(100), Correo)
     .input("ContraseñaHash", sql.NVarChar(255), ContraseñaHash)
     .input("Rol", sql.NVarChar(20), Rol)
-    .query(`INSERT INTO Usuarios (IdUsuario, Nombre, Correo, ContraseñaHash, Rol, FechaRegistro)
-            VALUES (@IdUsuario, @Nombre, @Correo, @ContraseñaHash, @Rol, GETDATE())`);
+    .execute("SP_CREAR_USUARIO");
 }
 //Obtiene el usuario segun su correo
 async function obtenerUsuarioPorCorreo(Correo) {
   const pool = await getConnection();
   const result = await pool.request()
     .input("Correo", sql.NVarChar(100), Correo)
-    .query("SELECT * FROM Usuarios WHERE Correo = @Correo");
+    .execute("SP_OBTENER_USUARIO_POR_CORREO");
   return result.recordset[0];
 }
 

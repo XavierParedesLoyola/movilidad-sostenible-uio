@@ -59,10 +59,14 @@ async function login(req, res) {
       jwtConfig.secret,
       { expiresIn: jwtConfig.expiresIn }
     );
-
+//Respuesta JSON
+let rol = usuario.Rol;
+if(rol === 'administrador') rol = 'admin';
     res.json({ 
       token,
-      rol: usuario.Rol 
+      rol, // <-- Usa la variable normalizada
+      IdUsuario: usuario.IdUsuario, 
+      NombreUsuario: usuario.Nombre
   });
   } catch (error) {
     console.error(error);

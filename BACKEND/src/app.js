@@ -6,6 +6,8 @@ const cors = require("cors"); // Middleware permite solicitudes desde otros domi
 const authRoutes = require("./routes/authRoutes"); // Importa las rutas
 const rutaRoutes = require("./routes/rutaRoutes");
 const viajeRoutes = require("./routes/viajeRoutes");
+const adminRoutes = require('./routes/admin'); // <-- importa las rutas de admin
+
 
 const { getConnection } = require("./config/db"); // Importa la función de conexión a la BDD
 //#endregion
@@ -23,7 +25,7 @@ app.use(express.json()); // Procesa cuerpos JSON
 app.use("/api/auth", authRoutes);
 app.use("/api/rutas", rutaRoutes);
 app.use("/api/viajes", viajeRoutes);
-
+app.use("/api/admin", adminRoutes); // <-- agrega esta línea
 //#endregion
 
 const PORT = process.env.PORT || 3000;
