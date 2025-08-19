@@ -64,7 +64,7 @@ let rol = usuario.Rol;
 if(rol === 'administrador') rol = 'admin';
     res.json({ 
       token,
-      rol: usuario.Rol,
+      rol, // <-- Usa la variable normalizada
       IdUsuario: usuario.IdUsuario, 
       NombreUsuario: usuario.Nombre
   });
