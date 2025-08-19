@@ -63,7 +63,8 @@ async function login(req, res) {
     res.json({ 
       token,
       rol: usuario.Rol,
-      IdUsuario: usuario.IdUsuario 
+      IdUsuario: usuario.IdUsuario, 
+      NombreUsuario: usuario.Nombre
   });
   } catch (error) {
     console.error(error);
