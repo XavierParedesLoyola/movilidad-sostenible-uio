@@ -16,8 +16,13 @@ export default function Login() {
         localStorage.setItem("token", res.token);
         localStorage.setItem("rol", res.rol);
         localStorage.setItem("idUsuario", res.IdUsuario);
-        localStorage.setItem("nombreUsuario", res.NombreUsuario); // <-- Aquí el cambio
-        navigate("/ciudadano");
+        localStorage.setItem("nombreUsuario", res.NombreUsuario);
+
+        if (res.rol === "admin") {
+          navigate("/dashboard"); // <--- Redirige a dashboard si es admin
+        } else {
+          navigate("/ciudadano"); // <--- Redirige a ciudadano si no es admin
+        }
       } else {
         setMensaje(res.message || "Credenciales incorrectas");
       }
