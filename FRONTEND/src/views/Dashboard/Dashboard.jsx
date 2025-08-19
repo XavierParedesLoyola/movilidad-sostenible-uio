@@ -1,10 +1,23 @@
-import LogoutButton from "../../components/LogoutButton"; // Ajusta la ruta si es necesario
+import { useEffect, useState } from "react";
+import { getDashboardStats } from "../../api/admin";
+import LogoutButton from "../../components/LogoutButton";
 
 export default function Dashboard() {
   const rol = localStorage.getItem("rol");
   if (rol !== "admin") {
     // Redirige o muestra acceso denegado
   }
+
+  const [stats, setStats] = useState({
+    usuarios: 0,
+    rutas: 0,
+    viajesHoy: 0,
+    co2: 0
+  });
+
+  useEffect(() => {
+    getDashboardStats().then(data => setStats(data));
+  }, []);
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -32,7 +45,7 @@ export default function Dashboard() {
             </span>
             <span className="text-gray-500">Usuarios Activos</span>
           </div>
-          <div className="text-2xl font-bold text-black">1,247</div>
+          <div className="text-2xl font-bold text-black">{stats.usuarios}</div>
           <div className="text-green-600 text-xs mt-1">+12% este mes</div>
         </div>
         <div className="bg-white rounded shadow p-4">
@@ -42,7 +55,7 @@ export default function Dashboard() {
             </span>
             <span className="text-gray-500">Rutas Registradas</span>
           </div>
-          <div className="text-2xl font-bold text-black">89</div>
+          <div className="text-2xl font-bold text-black">{stats.rutas}</div>
           <div className="text-green-600 text-xs mt-1">+3 esta semana</div>
         </div>
         <div className="bg-white rounded shadow p-4">
@@ -52,7 +65,7 @@ export default function Dashboard() {
             </span>
             <span className="text-gray-500">Viajes Hoy</span>
           </div>
-          <div className="text-2xl font-bold text-black">342</div>
+          <div className="text-2xl font-bold text-black">{stats.viajesHoy}</div>
           <div className="text-purple-600 text-xs mt-1">+8% vs ayer</div>
         </div>
         <div className="bg-white rounded shadow p-4">
@@ -62,7 +75,7 @@ export default function Dashboard() {
             </span>
             <span className="text-gray-500">CO₂ Ahorrado</span>
           </div>
-          <div className="text-2xl font-bold text-black">2.1 T</div>
+          <div className="text-2xl font-bold text-black">{stats.co2} T</div>
           <div className="text-yellow-600 text-xs mt-1">Este mes</div>
         </div>
       </div>
