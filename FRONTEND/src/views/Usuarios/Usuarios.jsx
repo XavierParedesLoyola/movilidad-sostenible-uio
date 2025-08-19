@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [usuarioEditar, setUsuarioEditar] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3000/api/admin/usuarios", {
@@ -50,6 +52,24 @@ export default function Usuarios() {
 
   return (
     <div className="p-8 min-h-screen bg-gray-50">
+      <div className="flex justify-between items-center mb-6">
+        <button
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+          onClick={() => navigate(-1)}
+        >
+          Volver atrás
+        </button>
+        <button
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("rol");
+            window.location.href = "/login";
+          }}
+        >
+          Cerrar sesión
+        </button>
+      </div>
       <h2 className="text-3xl font-bold mb-6 text-blue-800">Usuarios Registrados</h2>
       <button
         className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"

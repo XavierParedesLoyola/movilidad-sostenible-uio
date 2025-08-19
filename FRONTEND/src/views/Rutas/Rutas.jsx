@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Rutas() {
   const [rutas, setRutas] = useState([]);
   const [rutaEditar, setRutaEditar] = useState(null);
   const [errores, setErrores] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3000/api/admin/rutas", {
@@ -23,7 +25,22 @@ export default function Rutas() {
       setRutas(rutas.filter(r => r.IdRuta !== id));
     } else {
       const data = await res.json();
-      alert(data.error || "Error al eliminar ruta");
+      // Si el error es por viajes asociados, pregunta si desea forzar la eliminación
+      if (data.error && data.error.includes("viajes asociados")) {
+        if (window.confirm("Esta ruta tiene viajes asociados. ¿Deseas eliminar también todos los viajes de esta ruta y luego eliminar la ruta?")) {
+          const resForzar = await fetch(`http://localhost:3000/api/admin/rutas/${id}/forzar`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          });
+          if (resForzar.status === 204) {
+            setRutas(rutas.filter(r => r.IdRuta !== id));
+          } else {
+            alert("No se pudo eliminar la ruta y sus viajes asociados.");
+          }
+        }
+      } else {
+        alert(data.error || "Error al eliminar ruta");
+      }
     }
   };
 
@@ -64,6 +81,24 @@ export default function Rutas() {
 
   return (
     <div className="p-8 min-h-screen bg-gray-50">
+      <div className="flex justify-between items-center mb-6">
+        <button
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+          onClick={() => navigate(-1)}
+        >
+          Volver atrás
+        </button>
+        <button
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("rol");
+            window.location.href = "/login";
+          }}
+        >
+          Cerrar sesión
+        </button>
+      </div>
       <h2 className="text-3xl font-bold mb-6 text-blue-800">Rutas Registradas</h2>
       <button
         className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
