@@ -1,4 +1,9 @@
 export default function Dashboard() {
+  const rol = localStorage.getItem("rol");
+  if (rol !== "admin") {
+    // Redirige o muestra acceso denegado
+  }
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="bg-white rounded-lg shadow p-6 mb-8">
