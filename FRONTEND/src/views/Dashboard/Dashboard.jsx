@@ -15,11 +15,17 @@ export default function Dashboard() {
     viajesHoy: 0,
     co2: 0
   });
+  const [actividad, setActividad] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     getDashboardStats().then(data => setStats(data));
+    fetch("http://localhost:3000/api/admin/actividad-reciente", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+      .then(res => res.json())
+      .then(setActividad);
   }, []);
 
   return (
@@ -114,7 +120,12 @@ export default function Dashboard() {
             <h3 className="text-lg font-bold mb-2">Reportes</h3>
             <p>Análisis y estadísticas del sistema</p>
           </div>
-          <button className="mt-4 bg-white text-purple-700 font-semibold rounded px-4 py-2 hover:bg-purple-50 transition">Ver reportes</button>
+          <button
+            className="mt-4 bg-white text-purple-700 font-semibold rounded px-4 py-2 hover:bg-purple-50 transition"
+            onClick={() => navigate("/reportes")}
+          >
+            Ver reportes
+          </button>
         </div>
       </div>
 
@@ -122,33 +133,63 @@ export default function Dashboard() {
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-bold mb-4 text-black">Actividad Reciente del Sistema</h3>
         <ul className="space-y-4">
-          <li className="flex items-start gap-2">
-            <span className="mt-1">
-              <svg width="20" height="20" fill="#22c55e" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#22c55e"/><path d="M10 13l2 2 4-4" stroke="#fff" strokeWidth="2" fill="none"/></svg>
-            </span>
-            <div>
-              <span className="font-semibold text-green-700">Nuevo usuario registrado</span>
-              <div className="text-gray-600 text-sm">María González se registró como ciudadana • Hace 15 min</div>
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1">
-              <svg width="20" height="20" fill="#2563eb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#2563eb"/><path d="M8 12l2 2 4-4" stroke="#fff" strokeWidth="2" fill="none"/></svg>
-            </span>
-            <div>
-              <span className="font-semibold text-blue-700">Nueva ruta creada</span>
-              <div className="text-gray-600 text-sm">Ruta "Parque La Carolina - PUCE" agregada por Admin • Hace 1 hora</div>
-            </div>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1">
-              <svg width="20" height="20" fill="#a21caf" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#a21caf"/><path d="M8 12l2 2 4-4" stroke="#fff" strokeWidth="2" fill="none"/></svg>
-            </span>
-            <div>
-              <span className="font-semibold text-purple-700">Campaña activada</span>
-              <div className="text-gray-600 text-sm">Promotor Carlos activó "Semana de la Bicicleta" • Hace 2 horas</div>
-            </div>
-          </li>
+          {Array.isArray(actividad) && actividad.map((item, idx) => {
+            // Traduce la operación a un mensaje amigable
+            let accion = "";
+            if (item.TipoOperacion === "INSERT") accion = item.Entidad === "Usuarios" ? "Usuario creado" : item.Entidad === "Rutas" ? "Ruta creada" : "Registro creado";
+            else if (item.TipoOperacion === "UPDATE") accion = item.Entidad === "Usuarios" ? "Usuario modificado" : item.Entidad === "Rutas" ? "Ruta modificada" : "Registro modificado";
+            else if (item.TipoOperacion === "DELETE") accion = item.Entidad === "Usuarios" ? "Usuario eliminado" : item.Entidad === "Rutas" ? "Ruta eliminada" : "Registro eliminado";
+            else accion = "Actividad registrada";
+
+            return (
+              <li
+                key={idx}
+                className="flex items-start gap-2 bg-gray-50 border border-gray-200 rounded-lg p-4"
+              >
+                <span className="mt-1">
+                  {item.Entidad === "Usuarios" && (
+                    <svg width="20" height="20" fill="#22c55e" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#22c55e"/><path d="M10 13l2 2 4-4" stroke="#fff" strokeWidth="2" fill="none"/></svg>
+                  )}
+                  {item.Entidad === "Rutas" && (
+                    <svg width="20" height="20" fill="#2563eb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#2563eb"/><path d="M8 12l2 2 4-4" stroke="#fff" strokeWidth="2" fill="none"/></svg>
+                  )}
+                  {item.Entidad === "Viajes" && (
+                    <svg width="20" height="20" fill="#a21caf" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#a21caf"/><path d="M8 12l2 2 4-4" stroke="#fff" strokeWidth="2" fill="none"/></svg>
+                  )}
+                </span>
+                <div className="flex-1">
+                  <span className="font-bold text-gray-900 text-base block mb-1">
+                    {accion} <span className="font-normal text-gray-600">por {item.UsuarioOperador}</span>
+                  </span>
+                  <div className="text-gray-500 text-xs mb-2">
+                    {new Date(item.FechaOperacion).toLocaleString()}
+                  </div>
+                  <div className="text-xs">
+                    {(() => {
+                      try {
+                        const datos = JSON.parse(item.DatosAfectados);
+                        const ocultar = ["IdUsuario", "IdRuta", "IdViaje"];
+                        return (
+                          <ul className="ml-2 list-disc">
+                            {Object.entries(datos)
+                              .filter(([key]) => !ocultar.includes(key))
+                              .map(([key, value]) => (
+                                <li key={key}>
+                                  <span className="font-semibold text-gray-800">{key.charAt(0).toUpperCase() + key.slice(1)}:</span>{" "}
+                                  <span className="text-black">{value}</span>
+                                </li>
+                              ))}
+                          </ul>
+                        );
+                      } catch {
+                        return <span className="text-black">{item.DatosAfectados}</span>;
+                      }
+                    })()}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

@@ -7,6 +7,7 @@ import Promotor from "./views/Promotor/Promotor";
 import Dashboard from "./views/Dashboard/Dashboard";
 import Home from "./views/Home/Home";
 import Usuarios from "./views/Usuarios/Usuarios";
+import Reportes from "./views/Reportes/Reportes";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/promotor" element={<Promotor />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/reportes" element={<Reportes />} />
       </Routes>
     </BrowserRouter>
   );
