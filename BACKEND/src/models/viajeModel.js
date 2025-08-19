@@ -9,15 +9,14 @@ async function registrarViaje({ IdViaje, IdUsuario, IdRuta, FechaViaje, KmRecorr
     .input("FechaViaje", sql.Date, FechaViaje)
     .input("KmRecorridos", sql.Decimal(5, 2), KmRecorridos)
     .input("CO2Evitado", sql.Decimal(6, 2), CO2Evitado)
-    .query(`INSERT INTO Viajes (IdViaje, IdUsuario, IdRuta, FechaViaje, KmRecorridos, CO2Evitado)
-            VALUES (@IdViaje, @IdUsuario, @IdRuta, @FechaViaje, @KmRecorridos, @CO2Evitado)`);
+    .execute("SP_REGISTRAR_VIAJE");
 }
 
 async function obtenerViajesPorUsuario(IdUsuario) {
   const pool = await getConnection();
   const result = await pool.request()
     .input("IdUsuario", sql.UniqueIdentifier, IdUsuario)
-    .query("SELECT * FROM Viajes WHERE IdUsuario = @IdUsuario");
+    .execute("SP_OBTENER_VIAJES_POR_USUARIO");
   return result.recordset;
 }
 
