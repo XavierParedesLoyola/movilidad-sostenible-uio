@@ -15,6 +15,7 @@ export default function Login() {
       if (res.token && res.rol) {
         localStorage.setItem("token", res.token);
         localStorage.setItem("rol", res.rol);
+        localStorage.setItem("idUsuario", res.idUsuario); // res.idUsuario debe ser el GUID real
 
         // Redirigir según el rol
         if (res.rol === "administrador") {
