@@ -10,19 +10,19 @@ const dbSettings = {
   server: process.env.DB_SERVER,
   database: process.env.DB_DATABASE,
   options: {
-    encrypt: true,
-    trustServerCertificate: true
-  }
+    encrypt: false,
+    trustServerCertificate: true,
+  },
 };
 
-async function getConnection() {
-  try {
-    const pool = await sql.connect(dbSettings);
+const poolPromise = new sql.ConnectionPool(dbSettings)
+  .connect()
+  .then(pool => {
+    console.log("Conectado a SQL Server");
     return pool;
-  } catch (error) {
-    console.error("Error de conexión a SQL Server:", error);
-    throw error;
-  }
-}
+  })
+  .catch(err => console.log("Error de conexión a la BD:", err));
 
-module.exports = { sql, getConnection };
+module.exports = {
+  sql, poolPromise
+};
