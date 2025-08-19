@@ -1,4 +1,4 @@
-const { getConnection, sql } = require("../config/db");
+const { poolPromise, sql } = require("../config/db");
 
 async function crearUsuario({ IdUsuario, Nombre, Correo, ContraseñaHash, Rol }) {
   const pool = await getConnection();
@@ -11,11 +11,11 @@ async function crearUsuario({ IdUsuario, Nombre, Correo, ContraseñaHash, Rol })
     .execute("SP_CREAR_USUARIO");
 }
 //Obtiene el usuario segun su correo
-async function obtenerUsuarioPorCorreo(Correo) {
-  const pool = await getConnection();
+async function obtenerUsuarioPorCorreo(correo) {
+  const pool = await poolPromise;
   const result = await pool.request()
-    .input("Correo", sql.NVarChar(100), Correo)
-    .execute("SP_OBTENER_USUARIO_POR_CORREO");
+    .input("Correo", sql.VarChar, correo)
+    .query("SELECT * FROM Usuarios WHERE Correo = @Correo");
   return result.recordset[0];
 }
 

@@ -6,6 +6,7 @@ import Ciudadano from "./views/Ciudadano/Ciudadano";
 import Promotor from "./views/Promotor/Promotor";
 import Dashboard from "./views/Dashboard/Dashboard";
 import Home from "./views/Home/Home";
+import Usuarios from "./views/Usuarios/Usuarios";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/ciudadano" element={<Ciudadano />} />
         <Route path="/promotor" element={<Promotor />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/usuarios" element={<Usuarios />} />
       </Routes>
     </BrowserRouter>
   );

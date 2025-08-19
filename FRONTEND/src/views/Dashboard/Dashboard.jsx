@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getDashboardStats } from "../../api/admin";
 import LogoutButton from "../../components/LogoutButton";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const rol = localStorage.getItem("rol");
@@ -14,6 +15,8 @@ export default function Dashboard() {
     viajesHoy: 0,
     co2: 0
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDashboardStats().then(data => setStats(data));
@@ -87,7 +90,12 @@ export default function Dashboard() {
             <h3 className="text-lg font-bold mb-2">Gestión de Usuarios</h3>
             <p>Administrar ciudadanos y promotores</p>
           </div>
-          <button className="mt-4 bg-white text-blue-700 font-semibold rounded px-4 py-2 hover:bg-blue-50 transition">Ver usuarios</button>
+          <button
+            className="mt-4 bg-white text-blue-700 font-semibold rounded px-4 py-2 hover:bg-blue-50 transition"
+            onClick={() => navigate("/usuarios")}
+          >
+            Ver usuarios
+          </button>
         </div>
         <div className="rounded-lg p-6 bg-gradient-to-r from-green-600 to-green-400 text-white shadow flex flex-col justify-between">
           <div>

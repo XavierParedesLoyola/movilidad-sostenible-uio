@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { poolPromise } = require("../config/db"); // Ajusta según tu estructura real
+const { poolPromise } = require("../config/db");
 
 router.get("/dashboard-stats", async (req, res) => {
   try {
@@ -18,6 +18,17 @@ router.get("/dashboard-stats", async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: "Error obteniendo estadísticas" });
+  }
+});
+
+router.get("/usuarios", async (req, res) => {
+  try {
+    const pool = await poolPromise;
+    const result = await pool.request().query("SELECT IdUsuario, Nombre, Correo, Rol FROM Usuarios");
+    res.json(result.recordset);
+  } catch (err) {
+    console.error(err); // <-- Esto te mostrará el error real en la terminal
+    res.status(500).json({ error: "Error obteniendo usuarios" });
   }
 });
 
