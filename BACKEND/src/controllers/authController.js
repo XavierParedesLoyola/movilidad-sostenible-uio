@@ -60,7 +60,10 @@ async function login(req, res) {
       { expiresIn: jwtConfig.expiresIn }
     );
 
-    res.json({ token });
+    res.json({ 
+      token,
+      rol: usuario.Rol 
+  });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error en el servidor" });
