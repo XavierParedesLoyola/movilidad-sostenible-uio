@@ -1,7 +1,7 @@
-const { getConnection, sql } = require("../config/db");
+const { poolPromise, sql } = require("../config/db");
 
 async function registrarViaje({ IdViaje, IdUsuario, IdRuta, FechaViaje, KmRecorridos, CO2Evitado }) {
-  const pool = await getConnection();
+  const pool = await poolPromise;
   await pool.request()
     .input("IdViaje", sql.UniqueIdentifier, IdViaje)
     .input("IdUsuario", sql.UniqueIdentifier, IdUsuario)
@@ -13,7 +13,7 @@ async function registrarViaje({ IdViaje, IdUsuario, IdRuta, FechaViaje, KmRecorr
 }
 
 async function obtenerViajesPorUsuario(IdUsuario) {
-  const pool = await getConnection();
+  const pool = await poolPromise;
   const result = await pool.request()
     .input("IdUsuario", sql.UniqueIdentifier, IdUsuario)
     .execute("SP_OBTENER_VIAJES_POR_USUARIO");
