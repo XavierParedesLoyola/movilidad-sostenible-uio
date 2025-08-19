@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require("uuid"); //Genera uuid version 4
 const usuarioModel = require("../models/usuarioModel"); //importo mi capa de acceso de datos (modelo)
 const jwtConfig = require("../config/jwt");
 
+//#region REGISTER
 async function register(req, res) {
   try {
     //Se define la estructura del JSON que el cliente debe enviar:
@@ -34,6 +35,9 @@ async function register(req, res) {
     res.status(500).json({ message: "Error en el servidor" });
   }
 }
+//#endregion
+
+//#region LOGIN
 
 //Funcion para el LOGIN
 async function login(req, res) {
@@ -44,12 +48,12 @@ async function login(req, res) {
     if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
-
+//Valida si el usuario existe, compara la password con la password hasheada
     const esValida = await bcrypt.compare(Contraseña, usuario.ContraseñaHash);
     if (!esValida) {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
-
+//Genera el token
     const token = jwt.sign(
       { id: usuario.IdUsuario, rol: usuario.Rol },
       jwtConfig.secret,
@@ -62,5 +66,6 @@ async function login(req, res) {
     res.status(500).json({ message: "Error en el servidor" });
   }
 }
+//#endregion
 
 module.exports = { register, login };

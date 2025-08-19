@@ -11,7 +11,7 @@ async function crearUsuario({ IdUsuario, Nombre, Correo, ContraseñaHash, Rol })
     .query(`INSERT INTO Usuarios (IdUsuario, Nombre, Correo, ContraseñaHash, Rol, FechaRegistro)
             VALUES (@IdUsuario, @Nombre, @Correo, @ContraseñaHash, @Rol, GETDATE())`);
 }
-
+//Obtiene el usuario segun su correo
 async function obtenerUsuarioPorCorreo(Correo) {
   const pool = await getConnection();
   const result = await pool.request()
