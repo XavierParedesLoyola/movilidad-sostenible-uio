@@ -1,20 +1,31 @@
 import { useState } from "react";
 import { loginUsuario } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({ Correo: "", Contraseña: "" });
   const [mensaje, setMensaje] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMensaje("Iniciando sesión...");
     try {
       const res = await loginUsuario(form);
-      if (res.token) {
-        setMensaje("¡Login exitoso!");
-        // Aquí puedes guardar el token en localStorage y redirigir si quieres
-        // localStorage.setItem("token", res.token);
-        // window.location.href = "/";
+      if (res.token && res.rol) {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("rol", res.rol);
+
+        // Redirigir según el rol
+        if (res.rol === "administrador") {
+          navigate("/dashboard");
+        } else if (res.rol === "ciudadano") {
+          navigate("/ciudadano");
+        } else if (res.rol === "promotor") {
+          navigate("/promotor");
+        } else {
+          setMensaje("Rol no reconocido");
+        }
       } else {
         setMensaje(res.message || "Credenciales incorrectas");
       }
