@@ -102,7 +102,12 @@ export default function Dashboard() {
             <h3 className="text-lg font-bold mb-2">Gestión de Rutas</h3>
             <p>Crear y administrar rutas sostenibles</p>
           </div>
-          <button className="mt-4 bg-white text-green-700 font-semibold rounded px-4 py-2 hover:bg-green-50 transition">Gestionar rutas</button>
+          <button
+            className="mt-4 bg-white text-green-700 font-semibold rounded px-4 py-2 hover:bg-green-50 transition"
+            onClick={() => navigate("/rutas")}
+          >
+            Gestionar rutas
+          </button>
         </div>
         <div className="rounded-lg p-6 bg-gradient-to-r from-purple-600 to-purple-400 text-white shadow flex flex-col justify-between">
           <div>
