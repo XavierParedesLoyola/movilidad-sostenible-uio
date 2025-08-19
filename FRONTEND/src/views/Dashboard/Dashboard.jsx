@@ -1,3 +1,5 @@
+import LogoutButton from "../../components/LogoutButton"; // Ajusta la ruta si es necesario
+
 export default function Dashboard() {
   const rol = localStorage.getItem("rol");
   if (rol !== "admin") {
@@ -12,9 +14,12 @@ export default function Dashboard() {
             <h1 className="text-3xl font-bold text-black">Panel de Administración</h1>
             <p className="text-gray-600">Resumen general del sistema EcoMovilidad</p>
           </div>
-          <div className="text-right text-gray-500 text-sm">
-            <div>Última actualización</div>
-            <div className="font-semibold text-black">Hace 5 minutos</div>
+          <div className="flex flex-col items-end gap-2">
+            <div className="text-right text-gray-500 text-sm">
+              <div>Última actualización</div>
+              <div className="font-semibold text-black">Hace 5 minutos</div>
+            </div>
+            <LogoutButton />
           </div>
         </div>
       </div>
